@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "esnext",
+    "sourceMap": true,
+    "baseUrl": ".",
+    "rootDir": "./",
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    "paths": {
+      "@/*": ["src/*"],
+      "vue-src/*": ["src/*"]
+    }
+  },
+  "include": ["shims-*.d.ts", "src/**/*.ts", "src/**/*.vue"],
+  "exclude": ["node_modules"]
+}
