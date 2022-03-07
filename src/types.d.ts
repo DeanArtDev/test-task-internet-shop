@@ -13,4 +13,4 @@ export type GoodsItem = {
 };
 
 export type CartGoodsItemMap = Record<GoodsItem["name"], number>;
-export type ResponseGoodsItem = Omit<GoodsItem, "src"> & { image: string }
+export type ResponseGoodsItem = Omit<GoodsItem, "src"> & { image: string };

@@ -4,18 +4,25 @@ import { StateGoods } from "./state";
 import { goodsAction, goodsMutation } from "./consts";
 import { rootMutation } from "@/store/consts";
 import goodsItemAdapter from "@/utils/goodsItemAdaper";
+import { StateRoot } from "@/store/state";
+import { getGoods } from "@/utils/localStorageManager";
 import api from "@/api";
-import {StateRoot} from "@/store/state";
 
 export const createActions = (): ActionTree<StateGoods, StateRoot> => ({
   [goodsAction.GET_GOODS_ITEMS]: async function (context, payload: Dealer[]): Promise<GoodsItem[]> {
     let response: ResponseGoodsItem[];
+    const localGoods = getGoods();
+
     try {
-      context.commit(rootMutation.SET_LOADING, true, { root: true });
-      if (payload) {
-        response = await api.goods.getByDealer(payload);
+      if (!localGoods) {
+        context.commit(rootMutation.SET_LOADING, true, { root: true });
+        if (payload) {
+          response = await api.goods.getByDealer(payload);
+        } else {
+          response = await api.goods.getAll();
+        }
       } else {
-        response = await api.goods.getAll();
+        response = localGoods;
       }
 
       const data = response.map(goodsItemAdapter);

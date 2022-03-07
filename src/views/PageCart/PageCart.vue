@@ -36,12 +36,13 @@ export default Vue.extend({
     ...mapGetters(storeNamespace.CART, ["cartGoodsList", "cartGoodsItemsMap"]),
 
     totalPrice(): number {
-      return this.cartGoodsList.reduce((acc: number, item: GoodsItem) => {
+      const count = this.cartGoodsList.reduce((acc: number, item: GoodsItem) => {
         if (this.cartGoodsItemsMap[item.name]) {
           acc += item.price * this.cartGoodsItemsMap[item.name];
         }
         return acc;
       }, 0);
+      return count.toFixed(2);
     },
   },
   methods: {

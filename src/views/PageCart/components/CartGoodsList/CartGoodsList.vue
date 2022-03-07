@@ -25,7 +25,7 @@ export default Vue.extend({
   props: {
     goodsList: { type: Array as () => GoodsItem[], default: () => [] },
   },
-  // повторяющаяся логки, можно вынести в миксин или компоузабл (composition-api)
+  // [reviewer] повторяющаяся логки, можно вынести в миксин или компоузабл (composition-api)
   computed: {
     ...mapGetters(storeNamespace.CART, ["cartGoodsItemsMap"]),
   },

@@ -2,7 +2,8 @@ import { ActionTree } from "vuex";
 import { GoodsItem } from "@/types";
 import { StateCart } from "./state";
 import { cartActions, cartMutation } from "@/store/cart/consts";
-import {StateRoot} from "@/store/state";
+import { StateRoot } from "@/store/state";
+import { getCartCount, getCartMap, saveCartData } from "@/utils/localStorageManager";
 
 const INITIAL_COUNT_VALUE = 1;
 const CART_COUNT_STEP = 1;
@@ -14,8 +15,10 @@ export const createActions = (): ActionTree<StateCart, StateRoot> => ({
       if (state.cartGoodsItemsMap[name] === undefined) {
         commit(cartMutation.SET_GOODS_COUNT, { name, count: INITIAL_COUNT_VALUE });
         commit(cartMutation.SET_COUNT, state.cartGoodsCount + payload.length);
+        saveCartData(state.cartGoodsItemsMap, state.cartGoodsCount);
       } else {
         commit(cartMutation.SET_GOODS_COUNT, { name, count: state.cartGoodsItemsMap[name] + GOODS_COUNT_STEP });
+        saveCartData(state.cartGoodsItemsMap);
       }
     });
   },
@@ -29,16 +32,25 @@ export const createActions = (): ActionTree<StateCart, StateRoot> => ({
         commit(cartMutation.SET_COUNT, state.cartGoodsCount - CART_COUNT_STEP);
         commit(cartMutation.DELETE_GOODS_POSITION, name);
       }
+
+      saveCartData(state.cartGoodsItemsMap, state.cartGoodsCount);
     });
   },
 
-  [cartActions.REMOVE_GOODS_POSITION]: async function ({ state, commit }, payload: GoodsItem["name"]): Promise<void> {
-    let goodsValue = state.cartGoodsItemsMap[payload];
-    if (goodsValue) {
-      commit(cartMutation.SET_GOODS_COUNT, { name: payload, count: 0 });
-    }
-
-    commit(cartMutation.SET_COUNT, goodsValue - CART_COUNT_STEP);
+  [cartActions.REMOVE_GOODS_POSITION]: async function (
+    { state, commit, getters },
+    payload: GoodsItem["name"]
+  ): Promise<void> {
+    commit(cartMutation.SET_GOODS_COUNT, { name: payload, count: 0 });
     commit(cartMutation.DELETE_GOODS_POSITION, payload);
+    commit(cartMutation.SET_COUNT, state.cartGoodsCount - CART_COUNT_STEP);
+    saveCartData(getters.cartGoodsItemsMap, getters.cartGoodsCount);
+  },
+
+  [cartActions.STATE_INITIALISATION]: async function ({ commit }): Promise<void> {
+    const count = getCartCount();
+    const cartMap = getCartMap();
+    count !== null && commit(cartMutation.SET_COUNT, count);
+    cartMap && commit(cartMutation.SET_GOODS_ITEM_MAP, cartMap);
   },
 });

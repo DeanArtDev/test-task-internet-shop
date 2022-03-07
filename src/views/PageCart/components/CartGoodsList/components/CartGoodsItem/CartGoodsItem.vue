@@ -39,6 +39,7 @@ export default Vue.extend({
   border-radius: 14px;
   border: 1px solid #000000;
   padding: 10px;
+  margin-bottom: 20px;
 
   &__title {
     grid-area: title;
