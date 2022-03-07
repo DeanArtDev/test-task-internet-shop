@@ -29,17 +29,26 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .cart-goods-item {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(3, min-content);
   grid-column-gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
   grid-template-areas:
-    "img title add-button remove-all-button"
-    "img title count remove-all-button"
-    "img title remove-button remove-all-button";
+    "img title title title remove-all-button"
+    "img add-button count remove-button remove-all-button"
+    "img add-button count remove-button remove-all-button";
+  justify-items: center;
   border-radius: 14px;
   border: 1px solid #000000;
   padding: 10px;
   margin-bottom: 20px;
+
+  @media screen and (min-width: 568px) {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+      "img title add-button remove-all-button"
+      "img title count remove-all-button"
+      "img title remove-button remove-all-button";
+  }
 
   &__title {
     grid-area: title;
@@ -52,13 +61,20 @@ export default Vue.extend({
   }
 
   &__img {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
+    width: 70px;
+    height: 70px;
+    margin: auto;
     grid-area: img;
+
+    @media screen and (min-width: 768px) {
+      width: 100px;
+      height: 100px;
+    }
   }
 
   &__btn {
+    width: 50px;
+    height: 50px;
     border-width: 1px;
     border-style: solid;
     border-radius: 14px;

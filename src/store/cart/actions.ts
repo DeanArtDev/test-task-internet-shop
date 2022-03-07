@@ -37,14 +37,11 @@ export const createActions = (): ActionTree<StateCart, StateRoot> => ({
     });
   },
 
-  [cartActions.REMOVE_GOODS_POSITION]: async function (
-    { state, commit, getters },
-    payload: GoodsItem["name"]
-  ): Promise<void> {
+  [cartActions.REMOVE_GOODS_POSITION]: async function ({ state, commit }, payload: GoodsItem["name"]): Promise<void> {
     commit(cartMutation.SET_GOODS_COUNT, { name: payload, count: 0 });
     commit(cartMutation.DELETE_GOODS_POSITION, payload);
     commit(cartMutation.SET_COUNT, state.cartGoodsCount - CART_COUNT_STEP);
-    saveCartData(getters.cartGoodsItemsMap, getters.cartGoodsCount);
+    saveCartData(state.cartGoodsItemsMap, state.cartGoodsCount);
   },
 
   [cartActions.STATE_INITIALISATION]: async function ({ commit }): Promise<void> {
@@ -52,5 +49,11 @@ export const createActions = (): ActionTree<StateCart, StateRoot> => ({
     const cartMap = getCartMap();
     count !== null && commit(cartMutation.SET_COUNT, count);
     cartMap && commit(cartMutation.SET_GOODS_ITEM_MAP, cartMap);
+  },
+
+  [cartActions.CLEAR_CART]: async function ({ state, commit }): Promise<void> {
+    commit(cartMutation.SET_GOODS_ITEM_MAP, {});
+    commit(cartMutation.SET_COUNT, 0);
+    saveCartData(state.cartGoodsItemsMap, state.cartGoodsCount);
   },
 });
