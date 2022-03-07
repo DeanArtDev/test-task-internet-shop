@@ -8,15 +8,30 @@
 
   &__item {
     margin-right: 20px;
+  }
 
-    button {
-      border: none;
-      background-color: transparent;
-      font-weight: bold;
-      color: #000000;
+  &__btn {
+    border-color: #000000;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 14px;
+    background-color: transparent;
+    font-weight: bold;
+    color: #000000;
+    padding: 20px;
 
-      &.__active {
-        color: #325cc5;
+    &.__active {
+      border-color: #325cc5;
+      color: #325cc5;
+    }
+  }
+
+  @media screen and (min-width: 1000px) {
+    &__btn {
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.7;
       }
     }
   }

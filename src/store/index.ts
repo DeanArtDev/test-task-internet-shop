@@ -1,15 +1,20 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { storeNamespace } from "./consts";
+import cartModule from "./cart";
+import goodsModule from "./goods";
+import { createRootMutations } from "./mutations";
+import { createRootGetters } from "@/store/getters";
+import { createRootState, StateRoot } from "@/store/state";
 
 Vue.use(Vuex);
 
-const initialStore = new Vuex.Store({
-  state: {
-    name: "hello",
+export default new Vuex.Store<StateRoot>({
+  modules: {
+    [storeNamespace.CART]: cartModule,
+    [storeNamespace.GOODS]: goodsModule,
   },
-  mutations: {},
-  actions: {},
-  modules: {},
+  state: createRootState(),
+  mutations: createRootMutations(),
+  getters: createRootGetters(),
 });
-
-export default initialStore;

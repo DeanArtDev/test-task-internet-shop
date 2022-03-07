@@ -1,5 +1,6 @@
 import { CreateElement, VNode, RenderContext } from "vue";
 import { NavigationItem } from "@/types";
+
 import "./style.scss";
 
 type Props = {
@@ -13,19 +14,24 @@ export default {
     links: { type: Array as () => NavigationItem[], default: () => [] },
   },
   render(h: CreateElement, ctx: RenderContext<Props>): VNode {
+    const on = ctx.listeners["click"] ? { click: ctx.listeners["click"] } : undefined;
     const linkItem = (link: NavigationItem) =>
-      h("li", { class: "nav-list__item" }, [
+      h("li", { staticClass: "nav-list__item" }, [
         h(
           "button",
           {
-            class: "nav-list__btn",
+            staticClass: "nav-list__btn",
+            class: { __active: link.isActive },
+            on,
           },
           [link.text]
         ),
       ]);
 
-    return h("nav", { class: "base-navigation" }, [
-      h("ul", { class: "nav-list" }, [ctx.props.links.map((i) => linkItem(i))]),
+    return h("nav", { staticClass: "base-navigation" }, [
+      h("ul", { staticClass: "nav-list" }, [
+        ctx.props.links.map((i) => linkItem(i)),
+      ]),
     ]);
   },
 };

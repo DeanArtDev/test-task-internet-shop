@@ -8,8 +8,19 @@ body {
   margin: 0;
 }
 
-@mixin desktop-up {
-  @media screen and (min-width: 900px) {
-    @content;
+.app {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+
+  &.container {
+    padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
   }
 }

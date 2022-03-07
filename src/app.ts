@@ -1,13 +1,15 @@
-import App from "./App.vue";
 import Vue from "vue";
+import { storeNamespace } from "@/store/consts";
+import { goodsAction } from "@/store/goods/consts";
+import { Dealer } from "./types";
 import store from "./store";
+import App from "./App.vue";
+
 Vue.config.productionTip = false;
 
-type Dealer = string;
+const createApp = (dealers: Dealer[] = []) => {
+  store.dispatch(`${storeNamespace.GOODS}/${goodsAction.GET_GOODS_ITEMS}`, dealers);
 
-const createApp = (dealers: Dealer[]) => {
-  store.commit("add dealers", { dealers });
-  
   new Vue({
     store,
     render: (h) => h(App),

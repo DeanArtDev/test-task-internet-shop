@@ -1,38 +1,45 @@
 <template>
-  <div>
+  <div class="app container">
     <header class="header">
-      <base-navigation :links="navLinks" />
-      <cart />
+      <base-navigation :links="navLinks" @click="isShowCart = false" />
+      <cart :count="cartGoodsCount" @click="isShowCart = true" />
     </header>
 
-    <main>
-      <div class="container"></div>
-    </main>
+    <page-cart v-if="isShowCart" />
+    <page-goods v-else />
   </div>
 </template>
-
 <script lang="ts">
 import Vue from "vue";
+import { mapGetters } from "vuex";
 import { NavigationItem } from "@/types";
+import { storeNamespace } from "@/store/consts";
 import BaseNavigation from "@/components/BaseNavigation";
 import Cart from "@/components/Cart";
+import PageGoods from "@/views/PageGoods";
+import PageCart from "@/views/PageCart";
+
 import "@/style/app.scss";
 
 export default Vue.extend({
-  components: { BaseNavigation, Cart },
+  components: { BaseNavigation, Cart, PageCart, PageGoods },
   data() {
     return {
-      navLinks: [
-        {
-          text: "PageCart",
-          path: "cart",
-        },
-        {
-          text: "PageGoods",
-          path: "goods",
-        },
-      ] as NavigationItem[],
+      isShowCart: false,
     };
+  },
+  computed: {
+    ...mapGetters(storeNamespace.CART, ["cartGoodsCount"]),
+
+    navLinks(): NavigationItem[] {
+      return [
+        {
+          text: "Goods",
+          path: "goods",
+          isActive: !this.isShowCart,
+        },
+      ];
+    },
   },
 });
 </script>
@@ -41,6 +48,6 @@ export default Vue.extend({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
+  padding: 20px 0;
 }
 </style>
