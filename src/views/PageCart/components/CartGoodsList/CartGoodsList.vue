@@ -48,16 +48,3 @@ export default Vue.extend({
   },
 });
 </script>
-<style lang="scss">
-.cart-goods-list {
-  @media screen and (min-width: 1000px) {
-    &:hover {
-      cursor: pointer;
-      opacity: 0.7;
-    }
-    &:active {
-      opacity: 1;
-    }
-  }
-}
-</style>
